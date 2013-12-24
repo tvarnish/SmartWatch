@@ -15,11 +15,19 @@ SoftwareSerial oledSerial(SOFT_RX, SOFT_TX);
 G4D display(POWER_PIN,RESET_PIN,&oledSerial);
 
 /* VARIABLES */
-const int button = 11;
+const float pi = 3.1415;
 
 int buttonState = 0;
 int i;
 int x;
+int hAngle;
+int hX;
+int hY;
+int cX = 64;
+int cY = 64;
+int hLength = 45;
+
+float h = 0.0;
 
 /* FUNCTIONS */
 void ColourBackground()
@@ -41,13 +49,22 @@ void DrawClockLines()
   display.line( 4, 64, 14, 64, 255, 255, 255);
 }
 
+void DrawHourHand()
+{
+  h = h + 0.25;
+  hAngle = 2.0 * pi * h / 12.0;
+  hX = cX + hLength * sin(hAngle);
+  hY = cY - hLength * cos(hAngle);
+  display.line( cX, cY, hX, hY, 255, 0, 0);
+  delay(100);
+  display.line( cX, cY, hX, hY, 0, 0, 0);
+}
+
 /* MAIN PROGRAM */
 void setup()
 {  
         Serial.begin(9600);
         delay(100);
-        
-        pinMode(button, INPUT);
         
   	oledSerial.begin(57600);
 
@@ -62,16 +79,9 @@ void setup()
 void loop()
 {
   // Needs fixing
-  int x = 64;
-  int y = 124;
-  while (x != y)
+  while (true)
   {
-    //DrawHollowCircle(60, 1);
-    //DrawClockLines();
-    x = x - 1;
-    y = y - 1;
-    display.line( x, y, 64, 64, 255, 0, 0);
-    delay(10);
-    display.line( x, y, 64, 64, 0, 0, 0);
+    h ++;
+    DrawHourHand();
   }
 }

@@ -16,10 +16,18 @@ G4D display(POWER_PIN,RESET_PIN,&oledSerial);
 
 /* VARIABLES */
 const int button = 11;
+const float pi = 3.1415;
+const int cX = 64;
+const int cY = 64;
 
 int buttonState = 0;
 int i;
 int x;
+float h = 0.0;
+float hAngle;
+float hX;
+float hY;
+int hLength = 60;
 
 /* FUNCTIONS */
 void ColourBackground()
@@ -35,10 +43,15 @@ void DrawHollowCircle(int x, int i)
 
 void DrawClockLines()
 {
+  // Four main lines
   display.line( 64, 124, 64, 114, 255, 255, 255);
   display.line( 64, 4, 64, 14, 255, 255, 255);
   display.line( 124, 64, 114, 64, 255, 255, 255);
   display.line( 4, 64, 14, 64, 255, 255, 255);
+  
+  // Other lines
+  //display.line( 64, 64, 64.54, 4.0025, 255, 255, 255);
+ // display.line( 
 }
 
 /* MAIN PROGRAM */
@@ -61,17 +74,27 @@ void setup()
 /* LOOP */
 void loop()
 {
-  // Needs fixing
-  int x = 64;
-  int y = 124;
-  while (x != y)
+  for (int i = 0; i < 12; i ++)
   {
-    //DrawHollowCircle(60, 1);
-    //DrawClockLines();
-    x = x - 1;
-    y = y - 1;
-    display.line( x, y, 64, 64, 255, 0, 0);
-    delay(10);
-    display.line( x, y, 64, 64, 0, 0, 0);
+    h ++;
+  
+    hAngle = 2.0 * pi * h/12.0;
+    hX = cX + hLength * sin(hAngle);
+    hY = cY - hLength * cos(hAngle);
+    
+    display.line(64, 64, hX, hY, 255, 255, 255);
+  }
+   
+  h = 0;
+  hLength = hLength - 10;
+  
+  for (int i = 0; i < 12; i ++)
+  {
+    h ++;
+    
+    hX = cX + hLength * sin(hAngle);
+    hY = cY - hLength * cos(hAngle);
+    
+    display.line(64, 64, hX, hY, 0, 0, 0);
   }
 }

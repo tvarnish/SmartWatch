@@ -15,19 +15,34 @@ SoftwareSerial oledSerial(SOFT_RX, SOFT_TX);
 G4D display(POWER_PIN,RESET_PIN,&oledSerial);
 
 /* VARIABLES */
+<<<<<<< HEAD
 const int button = 11;
 const float pi = 3.1415;
 const int cX = 64;
 const int cY = 64;
+=======
+const float pi = 3.1415;
+>>>>>>> origin/master
 
 int buttonState = 0;
 int i;
 int x;
+<<<<<<< HEAD
 float h = 0.0;
 float hAngle;
 float hX;
 float hY;
 int hLength = 60;
+=======
+int hAngle;
+int hX;
+int hY;
+int cX = 64;
+int cY = 64;
+int hLength = 45;
+
+float h = 0.0;
+>>>>>>> origin/master
 
 /* FUNCTIONS */
 void ColourBackground()
@@ -54,13 +69,22 @@ void DrawClockLines()
  // display.line( 
 }
 
+void DrawHourHand()
+{
+  h = h + 0.25;
+  hAngle = 2.0 * pi * h / 12.0;
+  hX = cX + hLength * sin(hAngle);
+  hY = cY - hLength * cos(hAngle);
+  display.line( cX, cY, hX, hY, 255, 0, 0);
+  delay(100);
+  display.line( cX, cY, hX, hY, 0, 0, 0);
+}
+
 /* MAIN PROGRAM */
 void setup()
 {  
         Serial.begin(9600);
         delay(100);
-        
-        pinMode(button, INPUT);
         
   	oledSerial.begin(57600);
 
@@ -74,6 +98,7 @@ void setup()
 /* LOOP */
 void loop()
 {
+<<<<<<< HEAD
   for (int i = 0; i < 12; i ++)
   {
     h ++;
@@ -96,5 +121,12 @@ void loop()
     hY = cY - hLength * cos(hAngle);
     
     display.line(64, 64, hX, hY, 0, 0, 0);
+=======
+  // Needs fixing
+  while (true)
+  {
+    h ++;
+    DrawHourHand();
+>>>>>>> origin/master
   }
 }
